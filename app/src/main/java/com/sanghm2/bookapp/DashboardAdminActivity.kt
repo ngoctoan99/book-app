@@ -1,10 +1,13 @@
 package com.sanghm2.bookapp
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -25,6 +28,7 @@ class DashboardAdminActivity : AppCompatActivity() {
         binding = ActivityDarhboardAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
         firebaseAuth = FirebaseAuth.getInstance()
+        hideKeyboard()
         checkUser()
         loadCategories()
         binding.searchEt.addTextChangedListener(object: TextWatcher{
@@ -51,8 +55,13 @@ class DashboardAdminActivity : AppCompatActivity() {
         binding.addCategory.setOnClickListener {
             startActivity(Intent(this , CategoryAddActivity::class.java))
         }
+        binding.addPdfFab.setOnClickListener {
+            startActivity(Intent(this, PdfAddActivity::class.java))
+        }
     }
-
+    private fun hideKeyboard(){
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+    }
     private fun loadCategories() {
         categoryArrayList = ArrayList()
         val ref = FirebaseDatabase.getInstance().getReference("Categories")

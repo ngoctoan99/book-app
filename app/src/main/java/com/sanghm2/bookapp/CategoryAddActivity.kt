@@ -4,7 +4,9 @@ import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.Toast
+import com.google.android.material.internal.ViewUtils.hideKeyboard
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.sanghm2.bookapp.databinding.ActivityCategoryAddBinding
@@ -29,6 +31,11 @@ class CategoryAddActivity : AppCompatActivity() {
             validatePressed()
         }
     }
+
+    private fun hideKeyboard() {
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+    }
+
     private var category = ""
     private fun validatePressed() {
         category = binding.categoryEt.text.toString().trim()
