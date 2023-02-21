@@ -21,42 +21,51 @@
             android:layout_margin="10dp"
             android:layout_centerVertical="true"
             android:padding="5dp"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Booki Detail"
-            android:textColor="@color/white"
             android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:textSize="18dp"
             android:fontFamily="sans-serif-condensed"
-            android:layout_marginTop="10dp"/>
+            android:text="Booki Detail"
+            android:textColor="@color/white" />
     </RelativeLayout>
+
     <ScrollView
         android:layout_width="match_parent"
-        android:padding="10dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolBar">
+        android:layout_below="@+id/toolBar"
+        android:layout_above="@+id/bookOptionsLl"
+        android:padding="10dp">
+
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <RelativeLayout
                     android:id="@+id/pdfRl"
                     android:layout_width="110dp"
                     android:layout_height="150dp"
                     android:layout_marginEnd="5dp"
                     android:background="@color/gray02">
+
                     <com.github.barteksc.pdfviewer.PDFView
+                        android:id="@+id/pdfView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/pdfView"/>
+                        android:layout_height="match_parent" />
+
                     <ProgressBar
                         android:id="@+id/progressBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"/>
+                        android:layout_centerInParent="true" />
                 </RelativeLayout>
 
                 <TextView
@@ -64,15 +73,19 @@
                     style="@style/TextAppearance.MaterialComponents.Headline6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:layout_toEndOf="@id/pdfRl"
                     android:text="Book Title" />
 
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/pdfRl"
-                    android:layout_below="@+id/titleTv">
+                    android:layout_below="@+id/titleTv"
+                    android:layout_marginStart="5dp"
+                    android:layout_toEndOf="@+id/pdfRl">
+
                     <TableRow>
+
                         <TextView
                             android:id="@+id/categoryLabelTv"
                             style="@style/TextAppearance.MaterialComponents.Caption"
@@ -80,17 +93,19 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:text="Category" />
+
                         <TextView
                             android:id="@+id/categoryTv"
-                            android:layout_weight="1"
                             style="@style/TextAppearance.MaterialComponents.Caption"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
+                            android:layout_weight="1"
                             android:text="N/A" />
                     </TableRow>
-                    <TableRow
-                        android:layout_marginTop="5dp">
+
+                    <TableRow android:layout_marginTop="5dp">
+
                         <TextView
                             android:id="@+id/dateLabelTv"
                             style="@style/TextAppearance.MaterialComponents.Caption"
@@ -98,17 +113,19 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:text="Date" />
+
                         <TextView
                             android:id="@+id/dateTv"
-                            android:layout_weight="1"
                             style="@style/TextAppearance.MaterialComponents.Caption"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
+                            android:layout_weight="1"
                             android:text="N/A" />
                     </TableRow>
-                    <TableRow
-                        android:layout_marginTop="5dp">
+
+                    <TableRow android:layout_marginTop="5dp">
+
                         <TextView
                             android:id="@+id/sizeLabelTv"
                             style="@style/TextAppearance.MaterialComponents.Caption"
@@ -116,17 +133,19 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:text="Size" />
+
                         <TextView
                             android:id="@+id/sizeTv"
-                            android:layout_weight="1"
                             style="@style/TextAppearance.MaterialComponents.Caption"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
+                            android:layout_weight="1"
                             android:text="N/A" />
                     </TableRow>
-                    <TableRow
-                        android:layout_marginTop="5dp">
+
+                    <TableRow android:layout_marginTop="5dp">
+
                         <TextView
                             android:id="@+id/viewLabelTv"
                             style="@style/TextAppearance.MaterialComponents.Caption"
@@ -134,17 +153,19 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:text="Views" />
+
                         <TextView
                             android:id="@+id/viewTv"
-                            android:layout_weight="1"
                             style="@style/TextAppearance.MaterialComponents.Caption"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
+                            android:layout_weight="1"
                             android:text="N/A" />
                     </TableRow>
-                    <TableRow
-                        android:layout_marginTop="5dp">
+
+                    <TableRow android:layout_marginTop="5dp">
+
                         <TextView
                             android:id="@+id/downLabelTv"
                             style="@style/TextAppearance.MaterialComponents.Caption"
@@ -152,17 +173,19 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:text="DownLoad" />
+
                         <TextView
                             android:id="@+id/downTv"
-                            android:layout_weight="1"
                             style="@style/TextAppearance.MaterialComponents.Caption"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
+                            android:layout_weight="1"
                             android:text="N/A" />
                     </TableRow>
-                    <TableRow
-                        android:layout_marginTop="5dp">
+
+                    <TableRow android:layout_marginTop="5dp">
+
                         <TextView
                             android:id="@+id/pageLabelTv"
                             style="@style/TextAppearance.MaterialComponents.Caption"
@@ -170,25 +193,43 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:text="Pages" />
+
                         <TextView
                             android:id="@+id/pageTv"
-                            android:layout_weight="1"
                             style="@style/TextAppearance.MaterialComponents.Caption"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
+                            android:layout_weight="1"
                             android:text="N/A" />
                     </TableRow>
                 </TableLayout>
             </RelativeLayout>
+
             <TextView
+                android:id="@+id/descriptionTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/descriptionTv"
-                android:layout_marginTop="5dp"
-                android:textColor="@color/black"
-                android:text="Description of the book"/>
+                android:layout_marginTop="15dp"
+                android:text="Description of the book"
+                android:textColor="@color/black" />
         </LinearLayout>
 
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/bookOptionsLl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:background="@color/design_default_color_primary">
+        <Button
+            android:id="@+id/readBookBtn"
+            android:text= "Read"
+            android:drawableTop="@drawable/ic_book_white"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 </RelativeLayout>
