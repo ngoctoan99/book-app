@@ -115,6 +115,8 @@ class PdfAddActivity : AppCompatActivity() {
             Log.d(TAG,"uploadPdfInfoToDb: uploaded to db ")
             progressDialog.dismiss()
             Toast.makeText(this,"Uploaded...",Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this , DashboardAdminActivity::class.java))
+            finish()
             pdfUri = null
         }.addOnFailureListener {
             Log.d(TAG,"uploadPdfInfoToDb: failed to upload due to ${it.message}")

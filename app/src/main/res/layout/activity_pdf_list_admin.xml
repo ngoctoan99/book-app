@@ -59,7 +59,6 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/bookRvs"
-        tools:listitem="@layout/row_pdf_admin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/searchEt"
@@ -67,5 +66,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/row_pdf_admin" />
+
 </RelativeLayout>

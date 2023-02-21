@@ -93,7 +93,6 @@
             android:padding="10dp"
             android:inputType="textPersonName|textCapWords"/>
     </com.google.android.material.textfield.TextInputLayout>
-
     <TextView
         android:id="@+id/categoyTv"
         android:layout_width="match_parent"
@@ -107,19 +106,19 @@
         android:drawableEnd="@drawable/ic_down_gray"
         android:drawablePadding="10dp"
         android:gravity="center_vertical"
-        android:padding="10dp"
         android:hint="Book Category"
+        android:padding="10dp"
         android:textColor="@color/black"
         android:textSize="16sp" />
+
     <Button
+        android:id="@+id/submitBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:id="@+id/submitBtn"
         android:layout_below="@+id/categoyTv"
-        android:text="Upload"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
         android:background="@drawable/shape_button01"
-        />
+        android:text="Upload" />
 </RelativeLayout>

@@ -1,6 +1,8 @@
 package com.sanghm2.bookapp
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +15,8 @@ class AdapterPDFAdmin : RecyclerView.Adapter<AdapterPDFAdmin.HolderPDFAdmin>,Fil
     private lateinit var binding : RowPdfAdminBinding
     private var context : Context
     public var pdfAdminArrayList : ArrayList<ModelPdf>
-    private val filterList : ArrayList<ModelPdf>
-    var filter : FilterPdfAdmin? = null
+    private var filterList : ArrayList<ModelPdf>
+    private var filter : FilterPdfAdmin? = null
 
     constructor(context: Context, pdfAdminArrayList: ArrayList<ModelPdf>) {
         this.context = context
@@ -55,7 +57,32 @@ class AdapterPDFAdmin : RecyclerView.Adapter<AdapterPDFAdmin.HolderPDFAdmin>,Fil
         MyApplication.loadCategory(categoryId,holder.categoryTv)
         MyApplication.loadPdfFromUrlSinglePage(pdfUrl,title,holder.pdfView,holder.progressBar,null)
         MyApplication.loadPdfSize(pdfUrl,title,holder.sizeTv)
+        holder.moreBtn.setOnClickListener {
+            moreOptionDialog(modelPdf, holder)
+        }
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context , PdfDetailActivity::class.java)
+            intent.putExtra("pdfId",pdfId)
+            context.startActivity(intent)
+        }
+    }
 
+    private fun moreOptionDialog(modelPdf: ModelPdf, holder: AdapterPDFAdmin.HolderPDFAdmin) {
+        val bookId = modelPdf.id
+        val bookUrl = modelPdf.url
+        val bookTitle = modelPdf.title
+
+        val option = arrayOf("Edit" , "Delete")
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Choose Option").setItems(option){dialog , position ->
+        if(position == 0 ){
+            val intent  = Intent(context , PdfEditActivity::class.java)
+            intent.putExtra("bookId",bookId)
+            context.startActivity(intent)
+        }else if(position == 1){
+            MyApplication.deleteBook(context,bookId,bookUrl,bookTitle)
+        }
+        }.show()
     }
 
     override fun getItemCount(): Int {

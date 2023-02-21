@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -18,7 +19,8 @@ class PdfListAdminActivity : AppCompatActivity() {
     private lateinit var binding : ActivityPdfListAdminBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pdf_list_admin)
+        binding = ActivityPdfListAdminBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val intent = intent
         categoryId= intent.getStringExtra("categoryId")!!
@@ -32,7 +34,7 @@ class PdfListAdminActivity : AppCompatActivity() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 try{
-                    adapterpdf.filter!!.filter(p0)
+                    adapterpdf.filter.filter(p0)
                 }catch (e: Exception){
 
                 }
@@ -43,6 +45,9 @@ class PdfListAdminActivity : AppCompatActivity() {
             }
 
         })
+        binding.backBtn.setOnClickListener{
+            onBackPressed()
+        }
     }
 
     private fun loadPdfList() {
@@ -62,7 +67,6 @@ class PdfListAdminActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
             }
 
         })
