@@ -3,21 +3,21 @@ package com.sanghm2.bookapp
 import android.widget.Filter
 
 class FilterPdfAdmin : Filter{
-    var filterPdfAdmin  :ArrayList<ModelPdf>
-    var adapterPDFAdmin: AdapterPDFAdmin
+    private var filterPdfAdmin  :ArrayList<ModelPdf>
+    private var adapterPDFAdmin: AdapterPDFAdmin
 
-    constructor(filterPdfAdmin: ArrayList<ModelPdf>, adapterPDFAdmin: AdapterPDFAdmin) {
+    constructor(filterPdfAdmin: ArrayList<ModelPdf>, adapterPDFAdmin: AdapterPDFAdmin):super(){
         this.filterPdfAdmin = filterPdfAdmin
         this.adapterPDFAdmin = adapterPDFAdmin
     }
 
     override fun performFiltering(constrant: CharSequence?): FilterResults {
-        var constraint : CharSequence? = constrant
+        var constraint  = constrant
         val results = FilterResults()
         if(constraint!= null && constraint.isNotEmpty()){
             constraint= constrant.toString().lowercase()
             val filteredModels = ArrayList<ModelPdf>()
-            for( i in filteredModels.indices){
+            for( i in filterPdfAdmin.indices){
                 if(filterPdfAdmin[i].title.lowercase().contains(constraint)){
                     filteredModels.add(filterPdfAdmin[i])
                 }
@@ -33,7 +33,7 @@ class FilterPdfAdmin : Filter{
     }
 
     override fun publishResults(constrant: CharSequence?, results: FilterResults?) {
-        adapterPDFAdmin.pdfAdminArrayList =  results!!.values as ArrayList<ModelPdf>
+        adapterPDFAdmin.pdfAdminArrayList =  results?.values as ArrayList<ModelPdf>
         adapterPDFAdmin.notifyDataSetChanged()
     }
 }

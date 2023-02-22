@@ -32,6 +32,8 @@ class PDFViewActivity : AppCompatActivity() {
         ref.child(bookId).addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 val pdfUrl = snapshot.child("url").value
+                val title = "${snapshot.child("title").value}"
+                binding.toolBarTitleTv.text = title
                 loadBookFromUrl("$pdfUrl")
 
             }

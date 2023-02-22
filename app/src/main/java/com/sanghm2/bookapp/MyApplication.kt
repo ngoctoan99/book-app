@@ -10,6 +10,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import com.github.barteksc.pdfviewer.PDFView
+import com.github.barteksc.pdfviewer.listener.OnRenderListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -77,7 +78,8 @@ class MyApplication : Application() {
                         if(pagesTv !=null){
                             pagesTv.text = "${s}"
                         }
-                    }.load()
+                    }
+                    .load()
             }.addOnFailureListener {
                 Log.d(TAG, "loadPdfSize : Failed to get metada due to ${it.message}")
             }
@@ -127,7 +129,7 @@ class MyApplication : Application() {
                     }
                     val newViewCount = viewsCount.toLong() + 1
                     val hashMap = HashMap<String,Any>()
-
+                    hashMap["viewsCount"] = newViewCount
                     val dbRef = FirebaseDatabase.getInstance().getReference("Books")
                     dbRef.child(bookId).updateChildren(hashMap)
                 }
