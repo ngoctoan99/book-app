@@ -1,4 +1,4 @@
-package com.sanghm2.bookapp
+package com.sanghm2.bookapp.model
 
 class ModelPdf {
     var uid : String = ""

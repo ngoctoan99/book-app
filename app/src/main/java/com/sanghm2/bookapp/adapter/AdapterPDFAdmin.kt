@@ -1,4 +1,4 @@
-package com.sanghm2.bookapp
+package com.sanghm2.bookapp.adapter
 
 import android.app.AlertDialog
 import android.content.Context
@@ -9,7 +9,12 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
+import com.sanghm2.bookapp.*
+import com.sanghm2.bookapp.activity.PdfDetailActivity
+import com.sanghm2.bookapp.activity.PdfEditActivity
 import com.sanghm2.bookapp.databinding.RowPdfAdminBinding
+import com.sanghm2.bookapp.filter.FilterPdfAdmin
+import com.sanghm2.bookapp.model.ModelPdf
 
 class AdapterPDFAdmin : RecyclerView.Adapter<AdapterPDFAdmin.HolderPDFAdmin>,Filterable {
     private lateinit var binding : RowPdfAdminBinding
@@ -54,9 +59,15 @@ class AdapterPDFAdmin : RecyclerView.Adapter<AdapterPDFAdmin.HolderPDFAdmin>,Fil
         holder.titleTv.text = title
         holder.descriptionTv.text = description
         holder.dateTv.text = format
-        MyApplication.loadCategory(categoryId,holder.categoryTv)
-        MyApplication.loadPdfFromUrlSinglePage(pdfUrl,title,holder.pdfView,holder.progressBar,null)
-        MyApplication.loadPdfSize(pdfUrl,title,holder.sizeTv)
+        MyApplication.loadCategory(categoryId, holder.categoryTv)
+        MyApplication.loadPdfFromUrlSinglePage(
+            pdfUrl,
+            title,
+            holder.pdfView,
+            holder.progressBar,
+            null
+        )
+        MyApplication.loadPdfSize(pdfUrl, title, holder.sizeTv)
         holder.moreBtn.setOnClickListener {
             moreOptionDialog(modelPdf, holder)
         }
@@ -67,7 +78,7 @@ class AdapterPDFAdmin : RecyclerView.Adapter<AdapterPDFAdmin.HolderPDFAdmin>,Fil
         }
     }
 
-    private fun moreOptionDialog(modelPdf: ModelPdf, holder: AdapterPDFAdmin.HolderPDFAdmin) {
+    private fun moreOptionDialog(modelPdf: ModelPdf, holder: HolderPDFAdmin) {
         val bookId = modelPdf.id
         val bookUrl = modelPdf.url
         val bookTitle = modelPdf.title
@@ -80,7 +91,7 @@ class AdapterPDFAdmin : RecyclerView.Adapter<AdapterPDFAdmin.HolderPDFAdmin>,Fil
             intent.putExtra("bookId",bookId)
             context.startActivity(intent)
         }else if(position == 1){
-            MyApplication.deleteBook(context,bookId,bookUrl,bookTitle)
+            MyApplication.deleteBook(context, bookId, bookUrl, bookTitle)
         }
         }.show()
     }

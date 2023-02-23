@@ -1,4 +1,4 @@
-package com.sanghm2.bookapp
+package com.sanghm2.bookapp.activity
 
 import android.app.ProgressDialog
 import android.content.Intent

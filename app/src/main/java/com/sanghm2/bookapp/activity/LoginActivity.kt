@@ -1,11 +1,13 @@
-package com.sanghm2.bookapp
+package com.sanghm2.bookapp.activity
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
-import android.drm.ProcessedData
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -28,8 +30,6 @@ class LoginActivity : AppCompatActivity() {
         progressDialog =  ProgressDialog(this )
         progressDialog.setTitle("Please wait")
         progressDialog.setCanceledOnTouchOutside(false)
-
-
         binding.loginBtn.setOnClickListener {
             validateDate()
         }
@@ -38,6 +38,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
     }
+
     private var email = ""
     private var password = ""
     private fun validateDate() {
@@ -66,6 +67,10 @@ class LoginActivity : AppCompatActivity() {
             progressDialog.dismiss()
             Toast.makeText(this , "Login failed due to ${it.message}",Toast.LENGTH_SHORT).show()
         }
+    }
+    private fun hideKeyboard(view : View){
+        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     private fun checkUser() {

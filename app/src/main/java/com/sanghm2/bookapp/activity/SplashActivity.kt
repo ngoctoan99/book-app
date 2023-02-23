@@ -1,4 +1,4 @@
-package com.sanghm2.bookapp
+package com.sanghm2.bookapp.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,8 +9,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.sanghm2.bookapp.databinding.ActivityMainBinding
-import com.sanghm2.bookapp.databinding.ActivitySplashBinding
+import com.sanghm2.bookapp.R
 
 class SplashActivity : AppCompatActivity() {
 

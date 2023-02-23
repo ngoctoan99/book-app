@@ -1,15 +1,16 @@
-package com.sanghm2.bookapp
+package com.sanghm2.bookapp.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.sanghm2.bookapp.adapter.AdapterPDFAdmin
 import com.sanghm2.bookapp.databinding.ActivityPdfListAdminBinding
+import com.sanghm2.bookapp.model.ModelPdf
 
 class PdfListAdminActivity : AppCompatActivity() {
     private var categoryId = ""

@@ -1,6 +1,8 @@
-package com.sanghm2.bookapp
+package com.sanghm2.bookapp.filter
 
 import android.widget.Filter
+import com.sanghm2.bookapp.adapter.AdapterPDFAdmin
+import com.sanghm2.bookapp.model.ModelPdf
 
 class FilterPdfAdmin : Filter{
     private var filterPdfAdmin  :ArrayList<ModelPdf>

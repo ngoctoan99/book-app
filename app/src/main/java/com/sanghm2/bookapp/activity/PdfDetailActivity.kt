@@ -1,4 +1,4 @@
-package com.sanghm2.bookapp
+package com.sanghm2.bookapp.activity
 
 import android.Manifest
 import android.app.ProgressDialog
@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -15,7 +16,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
+import com.sanghm2.bookapp.MyApplication
 import com.sanghm2.bookapp.databinding.ActivityPdfDetailBinding
+import com.sanghm2.bookapp.ultil.Constants
 import java.io.FileOutputStream
 import java.lang.Exception
 
@@ -29,11 +32,11 @@ class PdfDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPdfDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        pdfId = intent.getStringExtra("pdfId")!!
         progressDialog = ProgressDialog(this)
         progressDialog.setTitle("Please wait...")
         progressDialog.setCanceledOnTouchOutside(false)
 
-        pdfId = intent.getStringExtra("pdfId")!!
         MyApplication.incrementBookViewCount(pdfId)
         loadBookDetail()
         binding.backBtn.setOnClickListener {
@@ -83,6 +86,7 @@ class PdfDetailActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
+                Log.d("Toan", "Failled due to ${error.message}")
             }
 
         })
@@ -98,7 +102,7 @@ class PdfDetailActivity : AppCompatActivity() {
         progressDialog.setMessage("Downloading Book")
         progressDialog.show()
         val ref = FirebaseStorage.getInstance().getReferenceFromUrl(bookUrl)
-        ref.getBytes(Constants.MAX_BYTES_PDF).addOnSuccessListener {bytes ->
+        ref.getBytes(Constants.MAX_BYTES_PDF).addOnSuccessListener { bytes ->
             saveToDownloadFolder(bytes)
         }.addOnFailureListener {
             progressDialog.dismiss()
@@ -146,7 +150,6 @@ class PdfDetailActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
             }
 
         })

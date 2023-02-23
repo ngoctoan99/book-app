@@ -1,6 +1,8 @@
-package com.sanghm2.bookapp
+package com.sanghm2.bookapp.filter
 
 import android.widget.Filter
+import com.sanghm2.bookapp.adapter.AdapterCategory
+import com.sanghm2.bookapp.model.ModelCategory
 
 class FilterCategory : Filter {
     private var filterList : ArrayList<ModelCategory>

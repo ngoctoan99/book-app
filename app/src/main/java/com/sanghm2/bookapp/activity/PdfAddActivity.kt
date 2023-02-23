@@ -1,11 +1,9 @@
-package com.sanghm2.bookapp
+package com.sanghm2.bookapp.activity
 
 import android.app.AlertDialog
-import android.app.Application
 import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
-import android.nfc.Tag
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -21,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.sanghm2.bookapp.databinding.ActivityPdfAddBinding
+import com.sanghm2.bookapp.model.ModelCategory
 
 class PdfAddActivity : AppCompatActivity() {
     private lateinit var binding : ActivityPdfAddBinding
