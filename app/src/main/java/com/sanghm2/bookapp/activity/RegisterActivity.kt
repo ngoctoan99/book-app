@@ -1,13 +1,19 @@
 package com.sanghm2.bookapp.activity
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.InputType
 import android.util.Patterns
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.sanghm2.bookapp.MyApplication
+import com.sanghm2.bookapp.R
 import com.sanghm2.bookapp.databinding.ActivityRegisterBinding
 
 class RegisterActivity : AppCompatActivity() {
@@ -15,6 +21,9 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var  binding : ActivityRegisterBinding
     private lateinit var firebaseAuth : FirebaseAuth
     private lateinit var progressDialog : ProgressDialog
+
+    private  var isClickPass : Boolean = false
+    private  var isClickConfirm : Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +40,11 @@ class RegisterActivity : AppCompatActivity() {
         binding.backBtn.setOnClickListener{
             onBackPressed();
         }
+        binding.registerLayout.setOnClickListener {
+            hideKeyboard(binding.nameEt)
+        }
+        MyApplication.hideAndShowText(binding.passwordEt,binding.passwordTil,isClickPass)
+        MyApplication.hideAndShowText(binding.confirmpasswordEt,binding.confirmpasswordTil,isClickConfirm)
     }
     private var name = "" ;
     private var email = "" ;
@@ -60,7 +74,10 @@ class RegisterActivity : AppCompatActivity() {
             creatUserAccount()
         }
     }
-
+    fun hideKeyboard(view: View) {
+        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
     private fun creatUserAccount() {
         progressDialog.setMessage("Creating Account...")
         progressDialog.show()

@@ -1,15 +1,21 @@
 package com.sanghm2.bookapp
 
+import android.app.Activity
 import android.app.Application
 import android.app.ProgressDialog
 import android.content.Context
+import android.text.InputType
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import com.github.barteksc.pdfviewer.PDFView
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -20,10 +26,6 @@ import java.util.*
 import kotlin.collections.HashMap
 
 class MyApplication : Application() {
-
-    override fun onCreate() {
-        super.onCreate()
-    }
 
     companion object {
         fun formatTimeStamp(timeStamp: Long): String {
@@ -138,6 +140,34 @@ class MyApplication : Application() {
                 }
 
             })
+        }
+
+        fun hideAndShowText(editText : EditText ,textInputLayout: TextInputLayout , isClick: Boolean){
+            var isClicks = isClick
+            editText.inputType =  InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            textInputLayout.setEndIconDrawable(R.drawable.eyeslash)
+            textInputLayout.setEndIconOnClickListener {
+                if(!isClicks){
+                    editText.inputType = InputType.TYPE_CLASS_TEXT
+                    editText.setSelection(editText.length())
+                    isClicks = true
+                    textInputLayout.setEndIconDrawable(R.drawable.eye)
+                }else{
+                    editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                    editText.setSelection(editText.length())
+                    isClicks = false
+                    textInputLayout.setEndIconDrawable(R.drawable.eyeslash)
+                }
+
+            }
+        }
+        fun  hideKeyboardWhenNotFocus(editText: EditText) : Boolean{
+            var notFocus : Boolean= false
+            editText.onFocusChangeListener = View.OnFocusChangeListener { view, focus ->
+                notFocus = !focus
+            }
+            Log.d("ToanClick" ,"$notFocus")
+            return notFocus
         }
     }
 }

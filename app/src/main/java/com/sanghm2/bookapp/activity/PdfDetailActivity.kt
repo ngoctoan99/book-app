@@ -36,7 +36,7 @@ class PdfDetailActivity : AppCompatActivity() {
         progressDialog = ProgressDialog(this)
         progressDialog.setTitle("Please wait...")
         progressDialog.setCanceledOnTouchOutside(false)
-
+        Log.d("toanpdfId", pdfId)
         MyApplication.incrementBookViewCount(pdfId)
         loadBookDetail()
         binding.backBtn.setOnClickListener {

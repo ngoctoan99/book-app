@@ -24,13 +24,11 @@ class AdapterPdfUser : RecyclerView.Adapter<AdapterPdfUser.HolderPdfUser>, Filte
     private var filterList : ArrayList<ModelPdf>
 
     private var filter : FilterPdfUser? = null
-
     constructor(context: Context, pdfList: ArrayList<ModelPdf>) {
         this.context = context
         this.pdfList = pdfList
         this.filterList = pdfList
     }
-
 
     inner class HolderPdfUser(itemView: View) : RecyclerView.ViewHolder(itemView){
             var pdfView  = binding.pdfView

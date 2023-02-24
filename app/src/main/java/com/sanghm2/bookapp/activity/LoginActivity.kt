@@ -3,10 +3,16 @@ package com.sanghm2.bookapp.activity
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.Color.parseColor
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.InputType
 import android.util.Patterns
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
@@ -14,11 +20,14 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.sanghm2.bookapp.MyApplication
+import com.sanghm2.bookapp.R
 import com.sanghm2.bookapp.databinding.ActivityLoginBinding
+import java.lang.reflect.Type
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding : ActivityLoginBinding
-
+    private var  isClick : Boolean  = false
     private lateinit var firebaseAuth : FirebaseAuth
     private lateinit var progressDialog : ProgressDialog
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +45,13 @@ class LoginActivity : AppCompatActivity() {
         binding.noAccountTv.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java ))
         }
-
+        MyApplication.hideAndShowText(binding.passwordEt, binding.passwordTil,isClick)
+        binding.layoutLogin.setOnClickListener {
+            hideKeyboard(binding.emailEt)
+        }
+        binding.backBtn.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     private var email = ""
@@ -68,10 +83,6 @@ class LoginActivity : AppCompatActivity() {
             Toast.makeText(this , "Login failed due to ${it.message}",Toast.LENGTH_SHORT).show()
         }
     }
-    private fun hideKeyboard(view : View){
-        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-    }
 
     private fun checkUser() {
         progressDialog.setMessage("Checking User ...")
@@ -98,5 +109,9 @@ class LoginActivity : AppCompatActivity() {
             }
 
         })
+    }
+    fun hideKeyboard(view: View) {
+        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
