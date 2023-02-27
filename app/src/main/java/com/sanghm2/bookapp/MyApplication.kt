@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat.getSystemService
 import com.github.barteksc.pdfviewer.PDFView
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -168,6 +169,15 @@ class MyApplication : Application() {
             }
             Log.d("ToanClick" ,"$notFocus")
             return notFocus
+        }
+        fun removeFavorite(context:Context ,pdfId : String){
+            val firebaseAuth = FirebaseAuth.getInstance()
+            val ref = FirebaseDatabase.getInstance().getReference("Users")
+            ref.child(firebaseAuth.uid!!).child("Favorites").child(pdfId).removeValue().addOnSuccessListener {
+
+            }.addOnFailureListener { e->
+                Toast.makeText(context,"Failed due to ${e.message}",Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

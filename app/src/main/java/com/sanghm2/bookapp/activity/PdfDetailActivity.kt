@@ -11,12 +11,14 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.sanghm2.bookapp.MyApplication
+import com.sanghm2.bookapp.R
 import com.sanghm2.bookapp.databinding.ActivityPdfDetailBinding
 import com.sanghm2.bookapp.ultil.Constants
 import java.io.FileOutputStream
@@ -28,6 +30,8 @@ class PdfDetailActivity : AppCompatActivity() {
     private var bookTitle = ""
     private var bookUrl = ""
     private  lateinit var progressDialog : ProgressDialog
+    private lateinit var firebaseAuth: FirebaseAuth
+    private  var isInMyFavorite = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPdfDetailBinding.inflate(layoutInflater)
@@ -36,6 +40,10 @@ class PdfDetailActivity : AppCompatActivity() {
         progressDialog = ProgressDialog(this)
         progressDialog.setTitle("Please wait...")
         progressDialog.setCanceledOnTouchOutside(false)
+        firebaseAuth = FirebaseAuth.getInstance()
+        if(firebaseAuth.currentUser != null){
+            checkFavorite()
+        }
         Log.d("toanpdfId", pdfId)
         MyApplication.incrementBookViewCount(pdfId)
         loadBookDetail()
@@ -54,6 +62,51 @@ class PdfDetailActivity : AppCompatActivity() {
                     requestStoragePermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             }
         }
+        binding.addFavoriteBtn.setOnClickListener {
+            if(firebaseAuth.currentUser == null){
+                Toast.makeText(this , "Login to add favorite",Toast.LENGTH_SHORT).show()
+            }
+            else {
+                if(isInMyFavorite){
+                    MyApplication.removeFavorite(this,pdfId)
+                }else {
+                    addFavorite()
+                }
+            }
+        }
+    }
+
+    private fun addFavorite() {
+        val timestamp = System.currentTimeMillis()
+        val hashMap = HashMap<String, Any>()
+        hashMap["bookId"] = pdfId
+        hashMap["timestamp"] = timestamp
+        val ref = FirebaseDatabase.getInstance().getReference("Users")
+        ref.child(firebaseAuth.uid!!).child("Favorites").child(pdfId).setValue(hashMap).addOnSuccessListener {
+
+        }.addOnFailureListener { e->
+            Toast.makeText(this, "Failed due to ${e.message}",Toast.LENGTH_SHORT).show()
+        }
+    }
+    private fun checkFavorite(){
+        val ref = FirebaseDatabase.getInstance().getReference("Users")
+        ref.child(firebaseAuth.uid!!).child("Favorites").child(pdfId).addValueEventListener(object:ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                isInMyFavorite = snapshot.exists()!!
+                if(isInMyFavorite){
+                    binding.addFavoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_favorite_white,0,0)
+                    binding.addFavoriteBtn.text = "Remove Favorites"
+                }else {
+                    binding.addFavoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_favorite_border_white,0,0)
+                    binding.addFavoriteBtn.text = "+ Favorites"
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
     }
 
 

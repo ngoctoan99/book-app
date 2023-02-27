@@ -1,4 +1,4 @@
-package com.sanghm2.bookapp
+package com.sanghm2.bookapp.fragment
 
 import android.os.Bundle
 import android.text.Editable
@@ -21,7 +21,7 @@ import java.lang.Exception
 class BookUserFragment : Fragment {
 
     public companion object{
-        public fun newInstance(categoryId: String, category: String, uid: String): BookUserFragment{
+        public fun newInstance(categoryId: String, category: String, uid: String): BookUserFragment {
             val fragment = BookUserFragment()
             val args = Bundle()
             args.putString("categoryId",categoryId)
@@ -73,7 +73,6 @@ class BookUserFragment : Fragment {
                     try {
                         adapterPdfUser.filter.filter(p0)
                     }catch (e: Exception){
-
                     }
             }
 
@@ -100,7 +99,7 @@ class BookUserFragment : Fragment {
             }
 
             override fun onCancelled(error: DatabaseError) {
-
+                Log.e("toanerror" , "Failed to due ${error.message}")
             }
 
         })
@@ -121,7 +120,7 @@ class BookUserFragment : Fragment {
             }
 
             override fun onCancelled(error: DatabaseError) {
-
+                Log.e("toanerror" , "Failed to due ${error.message}")
             }
 
         })
@@ -142,7 +141,7 @@ class BookUserFragment : Fragment {
             }
 
             override fun onCancelled(error: DatabaseError) {
-
+                Log.e("toanerror" , "Failed to due ${error.message}")
             }
 
         })

@@ -58,6 +58,9 @@ class DashboardAdminActivity : AppCompatActivity() {
         binding.addPdfFab.setOnClickListener {
             startActivity(Intent(this, PdfAddActivity::class.java))
         }
+        binding.profileBtn.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
     }
     private fun hideKeyboard(){
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
