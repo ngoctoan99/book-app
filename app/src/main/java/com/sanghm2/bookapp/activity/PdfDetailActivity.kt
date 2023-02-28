@@ -95,15 +95,14 @@ class PdfDetailActivity : AppCompatActivity() {
                 isInMyFavorite = snapshot.exists()!!
                 if(isInMyFavorite){
                     binding.addFavoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_favorite_white,0,0)
-                    binding.addFavoriteBtn.text = "Remove Favorites"
+                    binding.addFavoriteBtn.text = "Favorited"
                 }else {
                     binding.addFavoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_favorite_border_white,0,0)
-                    binding.addFavoriteBtn.text = "+ Favorites"
+                    binding.addFavoriteBtn.text = "Favorite"
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
             }
 
         })

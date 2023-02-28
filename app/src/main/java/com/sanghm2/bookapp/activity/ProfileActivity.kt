@@ -3,6 +3,7 @@ package com.sanghm2.bookapp.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -24,9 +25,9 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         firebaseAuth = FirebaseAuth.getInstance()
         loadUserInfo()
+        loadFavoriteBook()
         binding.backBtn.setOnClickListener {
             onBackPressed()
         }
@@ -55,7 +56,6 @@ class ProfileActivity : AppCompatActivity() {
                 try{
                     Glide.with(this@ProfileActivity).load(profileImage).placeholder(R.drawable.ic_person_gray).into(binding.profileIv)
                 }catch (e: Exception){
-                    Glide.with(this@ProfileActivity).load(R.drawable.ic_person_gray).into(binding.profileIv)
                 }
             }
 
@@ -71,13 +71,13 @@ class ProfileActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 bookArrayList.clear()
                 for (ds in snapshot.children){
-                    val bookId = "${snapshot.child("bookId").value}"
-                    val modelPdf = ModelPdf()
+                    val bookId = "${ds.child("bookId").value}"
+                    val modelPdf =  ModelPdf()
                     modelPdf.id  =bookId
                     bookArrayList.add(modelPdf)
                 }
-                binding.favoriteBookTv.text = "${bookArrayList.size}"
                 adapterFavorite = AdapterBookFavorite(this@ProfileActivity,bookArrayList)
+                binding.favoriteBookTv.text = "${bookArrayList.size}"
                 binding.favoriteBookRv.adapter = adapterFavorite
             }
 

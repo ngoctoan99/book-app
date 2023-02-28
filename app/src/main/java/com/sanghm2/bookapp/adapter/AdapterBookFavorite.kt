@@ -2,6 +2,7 @@ package com.sanghm2.bookapp.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ class AdapterBookFavorite:RecyclerView.Adapter<AdapterBookFavorite.HolderPdfFavo
     private val context : Context
     private var bookArrayList : ArrayList<ModelPdf>
     private lateinit var binding : RowBookFavoriteBinding
+
     constructor(context: Context, bookArrayList: ArrayList<ModelPdf>) {
         this.context = context
         this.bookArrayList = bookArrayList
@@ -41,6 +43,7 @@ class AdapterBookFavorite:RecyclerView.Adapter<AdapterBookFavorite.HolderPdfFavo
     }
 
     override fun onBindViewHolder(holder: HolderPdfFavorite, position: Int) {
+        Log.d("toansssssdsdsd","$position")
         val model = bookArrayList[position]
         loadBookDetails(model, holder)
         holder.itemView.setOnClickListener {
@@ -66,6 +69,7 @@ class AdapterBookFavorite:RecyclerView.Adapter<AdapterBookFavorite.HolderPdfFavo
                 val uid = "${snapshot.child("uid").value}"
                 val url = "${snapshot.child("url").value}"
                 val viewsCount = "${snapshot.child("viewsCount").value}"
+
                 model.isFavorite=  true
                 model.title = title
                 model.description = description

@@ -28,16 +28,17 @@
             android:layout_marginTop="10dp"
             android:textColor="@color/white"
             android:textStyle="bold"/>
+
         <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profileIv"
             android:layout_width="110dp"
             android:layout_height="110dp"
-            android:id="@+id/profileIv"
-            android:layout_centerHorizontal="true"
             android:layout_below="@id/toolBarTitleTv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
             android:background="@color/white"
             android:src="@drawable/ic_person_gray"
-            android:layout_marginTop="40dp"
-            app:shapeAppearanceOverlay="@style/styleRounderCornersImage"/>
+            app:shapeAppearanceOverlay="@style/styleRounderCornersImage" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"

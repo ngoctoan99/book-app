@@ -37,4 +37,8 @@ class ModelPdf {
         this.isFavorite = isFavorite
     }
 
+    override fun toString(): String {
+        return "ModelPdf(uid='$uid', id='$id', title='$title', description='$description', categoryId='$categoryId', url='$url', timestamp=$timestamp, viewsCount=$viewsCount, downloadsCount=$downloadsCount, isFavorite=$isFavorite)"
+    }
+
 }

@@ -1,9 +1,11 @@
 package com.sanghm2.bookapp.activity
 
+import android.Manifest
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,6 +16,8 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -30,7 +34,14 @@ class ProfileEditActivity : AppCompatActivity() {
     private lateinit var binding : ActivityProfileEditBinding
     private lateinit var firebaseAuth : FirebaseAuth
     private lateinit var progressDialog : ProgressDialog
-    private var imageUri: Uri? = null
+    private companion object {
+        private const val  CAMERA_REQUEST_CODE = 100
+        private const val  STORAGE_REQUEST_CODE = 101
+    }
+
+    private var  imageUri : Uri? = null
+    private lateinit var cameraPermission : Array<String>
+    private lateinit var storagePermission : Array<String>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileEditBinding.inflate(layoutInflater)
@@ -41,11 +52,16 @@ class ProfileEditActivity : AppCompatActivity() {
         setContentView(binding.root)
         firebaseAuth = FirebaseAuth.getInstance()
         loadUserInfo()
+        cameraPermission = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        storagePermission = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         binding.profileIv.setOnClickListener{
             showImageAttachMenu()
         }
         binding.updateBtn.setOnClickListener {
             validateData()
+        }
+        binding.backBtn.setOnClickListener {
+            onBackPressed()
         }
     }
     private var name = ""
@@ -81,16 +97,18 @@ class ProfileEditActivity : AppCompatActivity() {
 
     private fun updateProfile(uploadedImage : String) {
         progressDialog.setMessage("Uploading profile...")
-
+        progressDialog.show()
         val hashMap : HashMap<String , Any> = HashMap()
-        hashMap["name"] = "${name}"
-        if(imageUri!= null){
+        hashMap["name"] = "$name"
+        if(imageUri != null){
             hashMap["profileImage"] = uploadedImage
         }
         val ref = FirebaseDatabase.getInstance().getReference("Users")
         ref.child(firebaseAuth.uid!!).updateChildren(hashMap).addOnSuccessListener {
-            progressDialog.show()
+            progressDialog.dismiss()
             Toast.makeText(this, "Profile uploaded",Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this,ProfileActivity::class.java))
+            finish()
         }.addOnFailureListener {
             progressDialog.dismiss()
             Toast.makeText(this, "Failed upload profile due to ${it.message}",Toast.LENGTH_SHORT).show()
@@ -109,7 +127,6 @@ class ProfileEditActivity : AppCompatActivity() {
                 try{
                     Glide.with(this@ProfileEditActivity).load(profileImage).placeholder(R.drawable.ic_person_gray).into(binding.profileIv)
                 }catch (e: Exception){
-                    Glide.with(this@ProfileEditActivity).load(R.drawable.ic_person_gray).into(binding.profileIv)
                 }
             }
 
@@ -122,13 +139,22 @@ class ProfileEditActivity : AppCompatActivity() {
         val popopMenu =PopupMenu(this,binding.profileIv)
         popopMenu.menu.add(Menu.NONE,0,0,"Camera")
         popopMenu.menu.add(Menu.NONE,1,1,"Gallery")
-
+        popopMenu.show()
         popopMenu.setOnMenuItemClickListener { item ->
             val id = item.itemId
             if(id == 0){
-                pickImageCamera()
-            }else if(id == 1 ){
-                pickImageStorage()
+                if(checkCameraPermission()){
+                    pickImageCamera()
+                }else {
+                    requestCameraPermission()
+                }
+            }else if(id == 1){
+                if(checkStoragePermission()){
+                    pickImageStorage()
+                }
+                else {
+                    requestStoragePermission()
+                }
             }
             true
         }
@@ -137,7 +163,7 @@ class ProfileEditActivity : AppCompatActivity() {
     private fun pickImageStorage() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        galleryActivitiResultLauncher.launch(intent)
+        galleryActivityResultLauncher.launch(intent)
     }
 
     private fun pickImageCamera() {
@@ -153,7 +179,16 @@ class ProfileEditActivity : AppCompatActivity() {
     }
 
     private val cameraActivitiResultLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult(), ActivityResultCallback <ActivityResult>{result ->
+        ActivityResultContracts.StartActivityForResult()){result ->
+            if(result.resultCode == Activity.RESULT_OK){
+                binding.profileIv.setImageURI(imageUri)
+            }else {
+                Toast.makeText(this, "Cancelled",Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    private val galleryActivityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()){result ->
             if(result.resultCode == Activity.RESULT_OK){
                 val data = result.data
                 imageUri = data!!.data
@@ -162,16 +197,56 @@ class ProfileEditActivity : AppCompatActivity() {
                 Toast.makeText(this, "Cancelled",Toast.LENGTH_SHORT).show()
             }
         }
-    )
-    private val galleryActivitiResultLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult(), ActivityResultCallback <ActivityResult>{result ->
-            if(result.resultCode == Activity.RESULT_OK){
-                val data = result.data
-                imageUri = data!!.data
-                binding.profileIv.setImageURI(imageUri)
-            }else {
-                Toast.makeText(this, "Cancelled",Toast.LENGTH_SHORT).show()
+
+    private fun checkStoragePermission() : Boolean {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+    }
+    private fun checkCameraPermission(): Boolean {
+        val cameraResult = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+        val storageResult = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+        return cameraResult && storageResult
+    }
+
+    private fun requestStoragePermission(){
+        ActivityCompat.requestPermissions(this,storagePermission, STORAGE_REQUEST_CODE)
+    }
+    private fun requestCameraPermission(){
+        ActivityCompat.requestPermissions(this,cameraPermission, CAMERA_REQUEST_CODE)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when(requestCode){
+            CAMERA_REQUEST_CODE ->{
+                if(grantResults.isNotEmpty()){
+                    val cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    val storageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED
+                    if(cameraAccepted && storageAccepted){
+                        pickImageCamera()
+                    }else {
+                        showToast("Camera & Storage permission are required...")
+                    }
+                }
+            }
+            STORAGE_REQUEST_CODE->{
+                if(grantResults.isNotEmpty()){
+                    val storageAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    if(storageAccepted){
+                        pickImageStorage()
+                    }else {
+                        showToast("Storage permission are required...")
+                    }
+                }
             }
         }
-    )
+    }
+
+    private fun showToast(message: String){
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
 }
