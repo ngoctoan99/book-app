@@ -1,5 +1,6 @@
 package com.sanghm2.bookapp.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -16,7 +17,7 @@ import com.sanghm2.bookapp.activity.PdfDetailActivity
 import com.sanghm2.bookapp.databinding.RowBookFavoriteBinding
 import com.sanghm2.bookapp.model.ModelPdf
 
-class AdapterBookFavorite:RecyclerView.Adapter<AdapterBookFavorite.HolderPdfFavorite>{
+class AdapterBookFavorite : RecyclerView.Adapter<AdapterBookFavorite.HolderPdfFavorite>{
     private val context : Context
     private var bookArrayList : ArrayList<ModelPdf>
     private lateinit var binding : RowBookFavoriteBinding
@@ -55,7 +56,6 @@ class AdapterBookFavorite:RecyclerView.Adapter<AdapterBookFavorite.HolderPdfFavo
             MyApplication.removeFavorite(context,model.id)
         }
     }
-
     private fun loadBookDetails(model: ModelPdf, holder: AdapterBookFavorite.HolderPdfFavorite) {
         val bookId = model.id
         val ref = FirebaseDatabase.getInstance().getReference("Books")
@@ -94,7 +94,6 @@ class AdapterBookFavorite:RecyclerView.Adapter<AdapterBookFavorite.HolderPdfFavo
 
         })
     }
-
     override fun getItemCount(): Int {
         return bookArrayList.size
     }

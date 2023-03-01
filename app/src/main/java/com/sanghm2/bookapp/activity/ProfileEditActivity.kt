@@ -61,7 +61,8 @@ class ProfileEditActivity : AppCompatActivity() {
             validateData()
         }
         binding.backBtn.setOnClickListener {
-            onBackPressed()
+            startActivity(Intent(this@ProfileEditActivity, ProfileActivity::class.java))
+            finish()
         }
     }
     private var name = ""
@@ -181,6 +182,7 @@ class ProfileEditActivity : AppCompatActivity() {
     private val cameraActivitiResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()){result ->
             if(result.resultCode == Activity.RESULT_OK){
+                binding.profileIv.setImageURI(null)
                 binding.profileIv.setImageURI(imageUri)
             }else {
                 Toast.makeText(this, "Cancelled",Toast.LENGTH_SHORT).show()

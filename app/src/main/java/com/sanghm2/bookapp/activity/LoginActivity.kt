@@ -30,32 +30,18 @@ class LoginActivity : AppCompatActivity() {
     private var  isClick : Boolean  = false
     private lateinit var firebaseAuth : FirebaseAuth
     private lateinit var progressDialog : ProgressDialog
+    private var email = ""
+    private var password = ""
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        firebaseAuth = FirebaseAuth.getInstance()
-        progressDialog =  ProgressDialog(this )
-        progressDialog.setTitle("Please wait")
-        progressDialog.setCanceledOnTouchOutside(false)
-        binding.loginBtn.setOnClickListener {
-            validateDate()
-        }
-        binding.noAccountTv.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java ))
-        }
-        MyApplication.hideAndShowText(binding.passwordEt, binding.passwordTil,isClick)
-        binding.layoutLogin.setOnClickListener {
-            hideKeyboard(binding.emailEt)
-        }
-        binding.backBtn.setOnClickListener {
-            onBackPressed()
-        }
+        initVar()
+        actionView()
     }
 
-    private var email = ""
-    private var password = ""
     private fun validateDate() {
         email = binding.emailEt.text.toString().trim()
         password = binding.passwordEt.text.toString().trim()
@@ -73,6 +59,30 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun actionView(){
+        binding.loginBtn.setOnClickListener {
+            validateDate()
+        }
+        binding.noAccountTv.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java ))
+        }
+        binding.layoutLogin.setOnClickListener {
+            hideKeyboard(binding.emailEt)
+        }
+        binding.backBtn.setOnClickListener {
+            onBackPressed()
+        }
+        binding.forgotTv.setOnClickListener {
+            startActivity(Intent(this, ForgotPassword::class.java))
+        }
+    }
+    private fun initVar(){
+        firebaseAuth = FirebaseAuth.getInstance()
+        progressDialog =  ProgressDialog(this )
+        progressDialog.setTitle("Please wait")
+        progressDialog.setCanceledOnTouchOutside(false)
+        MyApplication.hideAndShowText(binding.passwordEt, binding.passwordTil,isClick)
+    }
     private fun loginUser() {
         progressDialog.setMessage("Logging In...")
         progressDialog.show()
@@ -80,7 +90,7 @@ class LoginActivity : AppCompatActivity() {
             checkUser()
         }.addOnFailureListener {
             progressDialog.dismiss()
-            Toast.makeText(this , "Login failed due to ${it.message}",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this , "${it.message}",Toast.LENGTH_SHORT).show()
         }
     }
 

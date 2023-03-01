@@ -20,7 +20,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var binding : ActivityProfileBinding
     private lateinit var firebaseAuth : FirebaseAuth
     private lateinit var bookArrayList: ArrayList<ModelPdf>
-    private lateinit var adapterFavorite :AdapterBookFavorite
+    private lateinit var adapterFavorite : AdapterBookFavorite
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
@@ -33,6 +33,7 @@ class ProfileActivity : AppCompatActivity() {
         }
         binding.editBtn.setOnClickListener {
             startActivity(Intent(this, ProfileEditActivity::class.java))
+            finish()
         }
     }
 
@@ -76,8 +77,8 @@ class ProfileActivity : AppCompatActivity() {
                     modelPdf.id  =bookId
                     bookArrayList.add(modelPdf)
                 }
-                adapterFavorite = AdapterBookFavorite(this@ProfileActivity,bookArrayList)
                 binding.favoriteBookTv.text = "${bookArrayList.size}"
+                adapterFavorite = AdapterBookFavorite(this@ProfileActivity,bookArrayList)
                 binding.favoriteBookRv.adapter = adapterFavorite
             }
 

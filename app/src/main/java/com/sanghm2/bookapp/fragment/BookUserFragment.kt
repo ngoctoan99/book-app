@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -16,6 +17,8 @@ import com.sanghm2.bookapp.adapter.AdapterPdfUser
 import com.sanghm2.bookapp.databinding.FragmentBookUserBinding
 import com.sanghm2.bookapp.model.ModelPdf
 import java.lang.Exception
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class BookUserFragment : Fragment {
@@ -94,7 +97,9 @@ class BookUserFragment : Fragment {
                     val modelPdf = ds.getValue(ModelPdf::class.java)
                     pdfArrayList.add(modelPdf!!)
                 }
-                adapterPdfUser = AdapterPdfUser(context!!, pdfArrayList)
+               if(context != null){
+                   adapterPdfUser = AdapterPdfUser(context!!, pdfArrayList)
+               }
                 binding.bookRv.adapter  = adapterPdfUser
             }
 
@@ -115,7 +120,10 @@ class BookUserFragment : Fragment {
                     val modelPdf = ds.getValue(ModelPdf::class.java)
                     pdfArrayList.add(modelPdf!!)
                 }
-                adapterPdfUser = AdapterPdfUser(context!!, pdfArrayList)
+                if(context != null){
+                    pdfArrayList.reverse()
+                    adapterPdfUser = AdapterPdfUser(context!!, pdfArrayList)
+                }
                 binding.bookRv.adapter  = adapterPdfUser
             }
 
@@ -136,7 +144,9 @@ class BookUserFragment : Fragment {
                     val modelPdf = ds.getValue(ModelPdf::class.java)
                     pdfArrayList.add(modelPdf!!)
                 }
-                adapterPdfUser = AdapterPdfUser(context!!, pdfArrayList)
+                if(context != null){
+                    adapterPdfUser = AdapterPdfUser(context!!, pdfArrayList)
+                }
                 binding.bookRv.adapter  = adapterPdfUser
             }
 

@@ -41,6 +41,9 @@ class DashboardUserActivity : AppCompatActivity() {
         binding.profileBtn.setOnClickListener {
             startActivity(Intent(this , ProfileActivity::class.java))
         }
+        binding.backBtn.setOnClickListener {
+            onBackPressed()
+        }
     }
     private fun setupWithViewPaperAdapter(viewpaper: ViewPager){
         viewPaperAdapter = ViewPaperAdapter(supportFragmentManager,FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,this)
@@ -128,11 +131,13 @@ class DashboardUserActivity : AppCompatActivity() {
             binding.subtTitleTv.text = "Not Logged In"
             binding.logoutBtn.visibility = View.GONE
             binding.profileBtn.visibility = View.GONE
+            binding.backBtn.visibility = View.VISIBLE
         }else {
             val email  = firebaseUser.email
             binding.subtTitleTv.text = email
             binding.logoutBtn.visibility = View.VISIBLE
             binding.profileBtn.visibility = View.VISIBLE
+            binding.backBtn.visibility = View.GONE
         }
     }
 }

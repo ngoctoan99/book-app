@@ -23,7 +23,7 @@ class ModelPdf {
         timestamp: Long,
         viewsCount: Long,
         downloadsCount: Long,
-        isFavorite: Boolean
+//        isFavorite: Boolean
     ) {
         this.uid = uid
         this.id = id
@@ -38,7 +38,7 @@ class ModelPdf {
     }
 
     override fun toString(): String {
-        return "ModelPdf(uid='$uid', id='$id', title='$title', description='$description', categoryId='$categoryId', url='$url', timestamp=$timestamp, viewsCount=$viewsCount, downloadsCount=$downloadsCount, isFavorite=$isFavorite)"
+        return "ModelPdf(uid='$uid', id='$id', title='$title', description='$description', categoryId='$categoryId', url='$url', timestamp=$timestamp, viewsCount=$viewsCount, downloadsCount=$downloadsCount)"
     }
 
 }
