@@ -29,7 +29,6 @@ class AdapterBookFavorite : RecyclerView.Adapter<AdapterBookFavorite.HolderPdfFa
 
     inner class HolderPdfFavorite(itemView : View) : RecyclerView.ViewHolder(itemView){
         var pdfView = binding.pdfView
-        var progressBar = binding.progressBar
         var titleTv = binding.titleTv
         var removeFavoriteIv = binding.removeFavoriteBook
         var descriptionTv = binding.descriptionTv
@@ -83,7 +82,7 @@ class AdapterBookFavorite : RecyclerView.Adapter<AdapterBookFavorite.HolderPdfFa
                 val date = MyApplication.formatTimeStamp(timestamp.toLong())
                 MyApplication.loadCategory(categoryId,holder.categoryTv)
                 MyApplication.loadPdfSize("$url","$title",holder.sizeTv)
-                MyApplication.loadPdfFromUrlSinglePage("$url","$title",holder.pdfView,holder.progressBar,null)
+                MyApplication.loadPdfFromUrlSinglePage("$url","$title",holder.pdfView,null)
                 holder.titleTv.text = title
                 holder.descriptionTv.text = description
                 holder.dateTv.text = date

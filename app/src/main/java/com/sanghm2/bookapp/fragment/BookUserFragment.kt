@@ -1,6 +1,7 @@
 package com.sanghm2.bookapp.fragment
 
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -13,6 +14,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.sanghm2.bookapp.R
+import com.sanghm2.bookapp.adapter.AdapterBookFavorite
 import com.sanghm2.bookapp.adapter.AdapterPdfUser
 import com.sanghm2.bookapp.databinding.FragmentBookUserBinding
 import com.sanghm2.bookapp.model.ModelPdf
@@ -38,7 +41,6 @@ class BookUserFragment : Fragment {
     private  var categoryId = ""
     private  var category = ""
     private  var uid = ""
-
     private lateinit var pdfArrayList : ArrayList<ModelPdf>
     private lateinit var adapterPdfUser  : AdapterPdfUser
     constructor()
@@ -97,10 +99,15 @@ class BookUserFragment : Fragment {
                     val modelPdf = ds.getValue(ModelPdf::class.java)
                     pdfArrayList.add(modelPdf!!)
                 }
-               if(context != null){
-                   adapterPdfUser = AdapterPdfUser(context!!, pdfArrayList)
-               }
-                binding.bookRv.adapter  = adapterPdfUser
+
+                Handler().postDelayed({
+                    if(context != null){
+                        adapterPdfUser = AdapterPdfUser(context!!, pdfArrayList)
+                    }
+                    binding.bookRv.adapter  = adapterPdfUser
+                    binding.shimmer.stopShimmerAnimation()
+                    binding.shimmer.visibility = View.GONE
+                }, 5000)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -120,11 +127,16 @@ class BookUserFragment : Fragment {
                     val modelPdf = ds.getValue(ModelPdf::class.java)
                     pdfArrayList.add(modelPdf!!)
                 }
-                if(context != null){
-                    pdfArrayList.reverse()
-                    adapterPdfUser = AdapterPdfUser(context!!, pdfArrayList)
-                }
-                binding.bookRv.adapter  = adapterPdfUser
+                Handler().postDelayed({
+                    if(context != null){
+                        pdfArrayList.reverse()
+                        adapterPdfUser = AdapterPdfUser(context!!, pdfArrayList)
+                    }
+                    binding.bookRv.adapter  = adapterPdfUser
+                    binding.shimmer.stopShimmerAnimation()
+                    binding.shimmer.visibility = View.GONE
+                }, 5000)
+
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -144,10 +156,14 @@ class BookUserFragment : Fragment {
                     val modelPdf = ds.getValue(ModelPdf::class.java)
                     pdfArrayList.add(modelPdf!!)
                 }
-                if(context != null){
-                    adapterPdfUser = AdapterPdfUser(context!!, pdfArrayList)
-                }
-                binding.bookRv.adapter  = adapterPdfUser
+                Handler().postDelayed({
+                    if(context != null){
+                        adapterPdfUser = AdapterPdfUser(context!!, pdfArrayList)
+                    }
+                    binding.bookRv.adapter  = adapterPdfUser
+                    binding.shimmer.stopShimmerAnimation()
+                    binding.shimmer.visibility = View.GONE
+                }, 5000)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -156,4 +172,16 @@ class BookUserFragment : Fragment {
 
         })
     }
+
+
+    override fun onResume() {
+        super.onResume()
+        binding.shimmer.startShimmerAnimation()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.shimmer.stopShimmerAnimation()
+    }
+
 }

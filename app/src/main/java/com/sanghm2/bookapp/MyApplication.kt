@@ -1,9 +1,12 @@
 package com.sanghm2.bookapp
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.app.ProgressDialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.text.InputType
 import android.text.format.DateFormat
 import android.util.Log
@@ -13,6 +16,7 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import com.github.barteksc.pdfviewer.PDFView
 import com.google.android.material.textfield.TextInputLayout
@@ -57,26 +61,28 @@ class MyApplication : Application() {
             }
         }
 
+
         fun loadPdfFromUrlSinglePage(
             pdfUrl: String,
             pdfTitle: String,
             pdfView: PDFView,
-            progressBar: ProgressBar,
+//            progressBar: ProgressBar,
             pagesTv: TextView?
         ) {
             val TAG = "PDF_THUMBNAIL_TAG"
             val ref = FirebaseStorage.getInstance().getReferenceFromUrl(pdfUrl)
             ref.getBytes(Constants.MAX_BYTES_PDF).addOnSuccessListener { byte ->
+                pdfView.recycle()
                 pdfView.fromBytes(byte).pages(0).spacing(0).swipeHorizontal(false)
                     .enableSwipe(false)
                     .onError { t -> 
-                        progressBar.visibility = View.INVISIBLE 
+//                        progressBar.visibility = View.INVISIBLE
                         Log.d(TAG,"loadPdfFromURLSinglePage : ${t.message}")
                     }.onPageError { page, t ->
-                        progressBar.visibility = View.INVISIBLE
+//                        progressBar.visibility = View.INVISIBLE
                         Log.d(TAG,"loadPdfFromURLSinglePage : ${t.message}")
                     }.onLoad { s->
-                        progressBar.visibility = View.INVISIBLE
+//                        progressBar.visibility = View.INVISIBLE
                         if(pagesTv !=null){
                             pagesTv.text = "${s}"
                         }

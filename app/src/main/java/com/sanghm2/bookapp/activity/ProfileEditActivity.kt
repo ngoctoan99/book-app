@@ -45,11 +45,11 @@ class ProfileEditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileEditBinding.inflate(layoutInflater)
-
         progressDialog = ProgressDialog(this)
         progressDialog.setTitle("Please wait")
         progressDialog.setCanceledOnTouchOutside(false)
         setContentView(binding.root)
+        this.overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left)
         firebaseAuth = FirebaseAuth.getInstance()
         loadUserInfo()
         cameraPermission = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -61,7 +61,9 @@ class ProfileEditActivity : AppCompatActivity() {
             validateData()
         }
         binding.backBtn.setOnClickListener {
-            startActivity(Intent(this@ProfileEditActivity, ProfileActivity::class.java))
+            val intent = Intent(this , ProfileActivity::class.java)
+            intent.putExtra("profile","profile")
+            startActivity(intent)
             finish()
         }
     }
@@ -250,5 +252,4 @@ class ProfileEditActivity : AppCompatActivity() {
     private fun showToast(message: String){
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
-
 }

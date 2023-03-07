@@ -7,7 +7,9 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -19,6 +21,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.sanghm2.bookapp.MyApplication
 import com.sanghm2.bookapp.R
+import com.sanghm2.bookapp.adapter.AdapterBookFavorite
 import com.sanghm2.bookapp.databinding.ActivityPdfDetailBinding
 import com.sanghm2.bookapp.ultil.Constants
 import java.io.FileOutputStream
@@ -126,7 +129,7 @@ class PdfDetailActivity : AppCompatActivity() {
                 val date = MyApplication.formatTimeStamp(timestamp.toLong())
                 MyApplication.loadCategory(categoryId, binding.categoryTv)
                 MyApplication.loadPdfFromUrlSinglePage(
-                    bookUrl, bookTitle, binding.pdfView, binding.progressBar, binding.pageTv
+                    bookUrl, bookTitle, binding.pdfView, binding.pageTv
                 )
                 MyApplication.loadPdfSize(bookUrl, bookTitle, binding.sizeTv)
 
@@ -135,6 +138,13 @@ class PdfDetailActivity : AppCompatActivity() {
                 binding.viewTv.text = viewsCount
                 binding.downTv.text = downloadsCount
                 binding.dateTv.text = date
+
+                Handler().postDelayed({
+                    binding.detailbookRl.visibility = View.VISIBLE
+                    binding.descriptionTv.visibility = View.VISIBLE
+                    binding.shimmer.stopShimmerAnimation()
+                    binding.shimmer.visibility = View.GONE
+                }, 3000)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -205,5 +215,19 @@ class PdfDetailActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+    override fun onStart() {
+        super.onStart()
+        binding.shimmer.startShimmerAnimation()
+    }
+    override fun onResume() {
+        super.onResume()
+        binding.shimmer.startShimmerAnimation()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.shimmer.stopShimmerAnimation()
     }
 }

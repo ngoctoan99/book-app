@@ -3,18 +3,12 @@ package com.sanghm2.bookapp.activity
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.Color.parseColor
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.InputType
 import android.util.Patterns
 import android.view.View
-import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -23,7 +17,6 @@ import com.google.firebase.database.ValueEventListener
 import com.sanghm2.bookapp.MyApplication
 import com.sanghm2.bookapp.R
 import com.sanghm2.bookapp.databinding.ActivityLoginBinding
-import java.lang.reflect.Type
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding : ActivityLoginBinding
@@ -33,11 +26,11 @@ class LoginActivity : AppCompatActivity() {
     private var email = ""
     private var password = ""
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        this.overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left)
         initVar()
         actionView()
     }
@@ -123,5 +116,9 @@ class LoginActivity : AppCompatActivity() {
     fun hideKeyboard(view: View) {
         val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+    override fun onBackPressed() {
+        super.onBackPressed()
+        this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right)
     }
 }

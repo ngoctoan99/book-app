@@ -28,6 +28,7 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
+        this.overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left)
         setContentView(binding.root)
         firebaseAuth = FirebaseAuth.getInstance()
         progressDialog =  ProgressDialog(this )
@@ -114,5 +115,10 @@ class RegisterActivity : AppCompatActivity() {
             Toast.makeText(this , "Failed saving account due to ${it.message}",Toast.LENGTH_SHORT).show()
         }
 
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right)
     }
 }

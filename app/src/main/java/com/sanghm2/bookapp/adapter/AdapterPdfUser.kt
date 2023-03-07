@@ -34,7 +34,6 @@ class AdapterPdfUser : RecyclerView.Adapter<AdapterPdfUser.HolderPdfUser>, Filte
             var pdfView  = binding.pdfView
             var titleTv  = binding.titleTv
             var descriptionTv  = binding.descriptionTv
-            var progressBar  = binding.progressBar
             var sizeTv  = binding.sizeTv
             var dateTv  = binding.dateTv
             var categoryTv  = binding.categoryTv
@@ -60,7 +59,7 @@ class AdapterPdfUser : RecyclerView.Adapter<AdapterPdfUser.HolderPdfUser>, Filte
         holder.titleTv.text =  title
         holder.descriptionTv.text = description
         holder.dateTv.text = date
-        MyApplication.loadPdfFromUrlSinglePage(url ,title,holder.pdfView,holder.progressBar,null )
+        MyApplication.loadPdfFromUrlSinglePage(url ,title,holder.pdfView,null )
         MyApplication.loadPdfSize(url,title,holder.sizeTv)
         MyApplication.loadCategory(categoryId,holder.categoryTv)
 

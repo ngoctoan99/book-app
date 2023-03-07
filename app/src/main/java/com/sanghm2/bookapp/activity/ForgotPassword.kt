@@ -19,6 +19,7 @@ class ForgotPassword : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityForgotPasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        this.overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left)
         firebaseAuth = FirebaseAuth.getInstance()
 
         progressDialog = ProgressDialog(this)
@@ -54,5 +55,10 @@ class ForgotPassword : AppCompatActivity() {
             progressDialog.dismiss()
             Toast.makeText(this, "Failed recover password due to ${it.message}",Toast.LENGTH_SHORT).show()
         }
+    }
+    override fun onBackPressed() {
+        super.onBackPressed()
+        this.overridePendingTransition(R.anim.slide_in_right,
+            R.anim.slide_out_right)
     }
 }

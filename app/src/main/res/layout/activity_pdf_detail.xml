@@ -12,27 +12,42 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@drawable/shape_toolbar02">
+
         <ImageButton
             android:id="@+id/backBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_back_white"
-            android:background="@android:color/transparent"
-            android:layout_margin="10dp"
             android:layout_centerVertical="true"
-            android:padding="5dp"/>
+            android:layout_margin="10dp"
+            android:background="@android:color/transparent"
+            android:padding="5dp"
+            android:src="@drawable/ic_back_white" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
-            android:textSize="18dp"
             android:fontFamily="sans-serif-condensed"
             android:text="Booki Detail"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="18dp" />
     </RelativeLayout>
-
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/toolBar"
+        android:layout_above="@+id/bookOptionsLl"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <include layout="@layout/book_detail_loading" />
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,6 +61,8 @@
             android:orientation="vertical">
 
             <RelativeLayout
+                android:id="@+id/detailbookRl"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -60,12 +77,6 @@
                         android:id="@+id/pdfView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
-
-                    <ProgressBar
-                        android:id="@+id/progressBar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true" />
                 </RelativeLayout>
 
                 <TextView
@@ -75,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_toEndOf="@id/pdfRl"
-                    android:text="Book Title" />
+                    />
 
                 <TableLayout
                     android:layout_width="match_parent"
@@ -100,11 +111,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
-                            android:layout_weight="1"
-                            android:text="N/A" />
+                            android:layout_weight="1" />
                     </TableRow>
 
-                    <TableRow android:layout_marginTop="5dp">
+                    <TableRow
+                        android:layout_marginTop="5dp">
 
                         <TextView
                             android:id="@+id/dateLabelTv"
@@ -120,11 +131,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
-                            android:layout_weight="1"
-                            android:text="N/A" />
+                            android:layout_weight="1"/>
                     </TableRow>
 
-                    <TableRow android:layout_marginTop="5dp">
+                    <TableRow
+                        android:layout_marginTop="5dp">
 
                         <TextView
                             android:id="@+id/sizeLabelTv"
@@ -140,11 +151,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
-                            android:layout_weight="1"
-                            android:text="N/A" />
+                            android:layout_weight="1" />
                     </TableRow>
 
-                    <TableRow android:layout_marginTop="5dp">
+                    <TableRow
+                        android:layout_marginTop="5dp">
 
                         <TextView
                             android:id="@+id/viewLabelTv"
@@ -160,11 +171,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
-                            android:layout_weight="1"
-                            android:text="N/A" />
+                            android:layout_weight="1" />
                     </TableRow>
 
-                    <TableRow android:layout_marginTop="5dp">
+                    <TableRow
+
+                        android:layout_marginTop="5dp">
 
                         <TextView
                             android:id="@+id/downLabelTv"
@@ -180,11 +192,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
-                            android:layout_weight="1"
-                            android:text="N/A" />
+                            android:layout_weight="1" />
                     </TableRow>
 
-                    <TableRow android:layout_marginTop="5dp">
+                    <TableRow
+                        android:layout_marginTop="5dp">
 
                         <TextView
                             android:id="@+id/pageLabelTv"
@@ -200,23 +212,21 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
-                            android:layout_weight="1"
-                            android:text="N/A" />
+                            android:layout_weight="1" />
                     </TableRow>
                 </TableLayout>
             </RelativeLayout>
 
             <TextView
                 android:id="@+id/descriptionTv"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:text="Description of the book"
                 android:textColor="@color/black" />
         </LinearLayout>
 
     </ScrollView>
-
     <LinearLayout
         android:id="@+id/bookOptionsLl"
         android:layout_width="match_parent"

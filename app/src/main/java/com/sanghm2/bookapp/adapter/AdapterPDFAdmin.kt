@@ -33,7 +33,6 @@ class AdapterPDFAdmin : RecyclerView.Adapter<AdapterPDFAdmin.HolderPDFAdmin>,Fil
 
     inner class HolderPDFAdmin(itemView: View) :RecyclerView.ViewHolder(itemView){
         val pdfView = binding.pdfView
-        val progressBar = binding.progressBar
         val titleTv = binding.titleTv
         val descriptionTv = binding.descriptionTv
         val categoryTv = binding.categoryTv
@@ -65,7 +64,6 @@ class AdapterPDFAdmin : RecyclerView.Adapter<AdapterPDFAdmin.HolderPDFAdmin>,Fil
             pdfUrl,
             title,
             holder.pdfView,
-            holder.progressBar,
             null
         )
         MyApplication.loadPdfSize(pdfUrl, title, holder.sizeTv)
