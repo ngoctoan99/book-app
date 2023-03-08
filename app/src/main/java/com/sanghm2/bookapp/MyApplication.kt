@@ -18,6 +18,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.github.barteksc.pdfviewer.PDFView
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -83,6 +84,36 @@ class MyApplication : Application() {
                         Log.d(TAG,"loadPdfFromURLSinglePage : ${t.message}")
                     }.onLoad { s->
 //                        progressBar.visibility = View.INVISIBLE
+                        if(pagesTv !=null){
+                            pagesTv.text = "${s}"
+                        }
+                    }
+                    .load()
+            }.addOnFailureListener {
+                Log.d(TAG, "loadPdfSize : Failed to get metada due to ${it.message}")
+            }
+        }
+        fun loadPdfFromUrlSinglePageLoading(
+            pdfUrl: String,
+            pdfTitle: String,
+            pdfView: PDFView,
+            shimmerFrameLayout: ShimmerFrameLayout,
+            pagesTv: TextView?
+        ) {
+            val TAG = "PDF_THUMBNAIL_TAG"
+            val ref = FirebaseStorage.getInstance().getReferenceFromUrl(pdfUrl)
+            ref.getBytes(Constants.MAX_BYTES_PDF).addOnSuccessListener { byte ->
+                pdfView.recycle()
+                pdfView.fromBytes(byte).pages(0).spacing(0).swipeHorizontal(false)
+                    .enableSwipe(false)
+                    .onError { t ->
+                        shimmerFrameLayout.visibility = View.INVISIBLE
+                        Log.d(TAG,"loadPdfFromURLSinglePage : ${t.message}")
+                    }.onPageError { page, t ->
+                        shimmerFrameLayout.visibility = View.INVISIBLE
+                        Log.d(TAG,"loadPdfFromURLSinglePage : ${t.message}")
+                    }.onLoad { s->
+                        shimmerFrameLayout.visibility = View.INVISIBLE
                         if(pagesTv !=null){
                             pagesTv.text = "${s}"
                         }

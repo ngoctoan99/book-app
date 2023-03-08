@@ -1,16 +1,28 @@
 package com.sanghm2.bookapp.activity
 
+
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
+
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.WindowManager
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
+
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.sanghm2.bookapp.BuildConfig
 import com.sanghm2.bookapp.adapter.AdapterCategory
 import com.sanghm2.bookapp.databinding.ActivityDarhboardAdminBinding
 import com.sanghm2.bookapp.model.ModelCategory
@@ -23,14 +35,28 @@ class DashboardAdminActivity : AppCompatActivity() {
     private lateinit var firebaseAuth  : FirebaseAuth
     private lateinit var categoryArrayList: ArrayList<ModelCategory>
     private lateinit var adapterCategory: AdapterCategory
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDarhboardAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
         firebaseAuth = FirebaseAuth.getInstance()
+        val uri = Uri.parse("package:${BuildConfig.APPLICATION_ID}")
+        if(ContextCompat.checkSelfPermission(this , Manifest.permission.MANAGE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+
+        }else {
+            val uri = Uri.parse("package:${BuildConfig.APPLICATION_ID}")
+            startActivity(
+                Intent(
+                    Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
+                    uri
+                )
+            )
+        }
         hideKeyboard()
         checkUser()
         loadCategories()
+
         binding.searchEt.addTextChangedListener(object: TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }

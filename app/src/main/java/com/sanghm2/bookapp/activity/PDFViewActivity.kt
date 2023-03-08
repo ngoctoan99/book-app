@@ -11,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.sanghm2.bookapp.databinding.ActivityPdfviewBinding
+import com.sanghm2.bookapp.model.ModelFile
 import com.sanghm2.bookapp.ultil.Constants
 
 class PDFViewActivity : AppCompatActivity() {
@@ -20,11 +21,32 @@ class PDFViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPdfviewBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        bookId = intent.getStringExtra("bookId")!!
-        loadBookDetail()
+        bookId = intent.getStringExtra("bookId").toString()
+        val modelFile = intent.getSerializableExtra("uri") as? ModelFile
+        if(modelFile != null){
+           loadBookFromMyPhone(modelFile)
+        }
+        if(bookId != "" && bookId != "null"){
+            loadBookDetail()
+        }
         binding.backBtn.setOnClickListener {
             onBackPressed()
         }
+    }
+
+    private fun loadBookFromMyPhone(modelFile: ModelFile) {
+        binding.toolBarTitleTv.text = modelFile.file.name
+        binding.pdfView.fromFile(modelFile.file).swipeHorizontal(false)
+            .onPageChange{page , pageCount ->
+                val currentPage =  page + 1
+                binding.toolBarSubTitleTv.text = "${currentPage}/${pageCount}"
+            }
+            .onError {
+                Log.e("Errorsss" , "loadBookFromUrl  ${it.message}")
+            }.onPageError{page , t ->
+                Log.e("Errorsss" , "loadBookFromUrl  ${t.message}")
+            }.load()
+        binding.progressBar.visibility = View.GONE
     }
 
     private fun loadBookDetail() {

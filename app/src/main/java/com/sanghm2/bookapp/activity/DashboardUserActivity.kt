@@ -1,10 +1,19 @@
 package com.sanghm2.bookapp.activity
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -14,6 +23,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.sanghm2.bookapp.BuildConfig
 import com.sanghm2.bookapp.fragment.BookUserFragment
 import com.sanghm2.bookapp.databinding.ActivityDashboardUserBinding
 import com.sanghm2.bookapp.model.ModelCategory
@@ -24,11 +34,22 @@ class DashboardUserActivity : AppCompatActivity() {
     private lateinit var firebaseAuth : FirebaseAuth
     private lateinit var categoryArrayList: ArrayList<ModelCategory>
     private lateinit var viewPaperAdapter: ViewPaperAdapter
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDashboardUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        if(ContextCompat.checkSelfPermission(this , Manifest.permission.MANAGE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
 
+        }else {
+            val uri = Uri.parse("package:${BuildConfig.APPLICATION_ID}")
+            startActivity(
+                Intent(
+                    Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
+                    uri
+                )
+            )
+        }
         firebaseAuth = FirebaseAuth.getInstance()
         checkUser()
         setupWithViewPaperAdapter(binding.viewPager)

@@ -1,8 +1,11 @@
 package com.sanghm2.bookapp.activity
 
+
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.os.Handler
 import android.util.Log
 import android.view.View
@@ -16,19 +19,23 @@ import com.sanghm2.bookapp.MyApplication
 import com.sanghm2.bookapp.R
 import com.sanghm2.bookapp.adapter.AdapterBookFavorite
 import com.sanghm2.bookapp.databinding.ActivityProfileBinding
+import com.sanghm2.bookapp.model.ModelFile
 import com.sanghm2.bookapp.model.ModelPdf
+import java.io.File
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var binding : ActivityProfileBinding
     private lateinit var firebaseAuth : FirebaseAuth
     private lateinit var bookArrayList: ArrayList<ModelPdf>
     private lateinit var adapterFavorite : AdapterBookFavorite
+    private lateinit var pdfArrayList : ArrayList<ModelFile>
+    private var email = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.myFileTv.text = "0"
         val intent = intent.getStringExtra("profile") + ""
-
         if(intent != "profile"){
             this.overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left)
         }else {
@@ -37,6 +44,7 @@ class ProfileActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
         loadUserInfo()
         loadFavoriteBook()
+        loadFileDocuments()
         binding.backBtn.setOnClickListener {
             onBackPressed()
         }
@@ -44,13 +52,30 @@ class ProfileActivity : AppCompatActivity() {
             startActivity(Intent(this, ProfileEditActivity::class.java))
             finish()
         }
+        binding.openMyFile.setOnClickListener{
+            startActivity(Intent(this, DownloadFilesActivity::class.java))
+            finish()
+        }
     }
-
+    private fun loadFileDocuments() {
+        pdfArrayList = ArrayList()
+        val folder = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),"book app/${firebaseAuth.currentUser!!.email}")
+        if(folder.exists()){
+            val files = folder.listFiles()
+            for(fileEntry in files){
+                val uri = Uri.fromFile(fileEntry).toString()
+                val modelPdf = ModelFile(fileEntry,uri)
+                pdfArrayList.add(modelPdf)
+            }
+            binding.myFileTv.text = "${pdfArrayList.size}"
+        }else {
+        }
+    }
     private fun loadUserInfo() {
         val ref = FirebaseDatabase.getInstance().getReference("Users")
         ref.child(firebaseAuth.uid!!).addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                val email = "${snapshot.child("email").value}"
+                email = "${snapshot.child("email").value}"
                 val name = "${snapshot.child("name").value}"
                 val profileImage = "${snapshot.child("profileImage").value}"
                 val timestamp = "${snapshot.child("timestamp").value}"
@@ -88,8 +113,7 @@ class ProfileActivity : AppCompatActivity() {
                 }
                 binding.favoriteBookTv.text = "${bookArrayList.size}"
                 Handler().postDelayed({
-                    adapterFavorite = AdapterBookFavorite(this@ProfileActivity,bookArrayList)
-                    binding.favoriteBookRv.adapter = adapterFavorite
+                    setUpFavoriteBookList(bookArrayList)
                     binding.shimmer.stopShimmerAnimation()
                     binding.shimmer.visibility = View.GONE
                 }, 5000)
@@ -102,16 +126,17 @@ class ProfileActivity : AppCompatActivity() {
         })
     }
 
+    private fun setUpFavoriteBookList(bookArrayList: ArrayList<ModelPdf>) {
+        binding.favoriteBookTv.text = "${bookArrayList.size}"
+        adapterFavorite = AdapterBookFavorite(this@ProfileActivity,bookArrayList)
+        binding.favoriteBookRv.adapter = adapterFavorite
+    }
+
     override fun onBackPressed() {
         super.onBackPressed()
         this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right)
     }
 
-
-    override fun onStart() {
-        super.onStart()
-        binding.shimmer.startShimmerAnimation()
-    }
     override fun onResume() {
         super.onResume()
         binding.shimmer.startShimmerAnimation()

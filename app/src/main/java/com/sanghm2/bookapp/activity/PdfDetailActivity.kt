@@ -24,6 +24,7 @@ import com.sanghm2.bookapp.R
 import com.sanghm2.bookapp.adapter.AdapterBookFavorite
 import com.sanghm2.bookapp.databinding.ActivityPdfDetailBinding
 import com.sanghm2.bookapp.ultil.Constants
+import java.io.File
 import java.io.FileOutputStream
 import java.lang.Exception
 
@@ -168,25 +169,30 @@ class PdfDetailActivity : AppCompatActivity() {
             saveToDownloadFolder(bytes)
         }.addOnFailureListener {
             progressDialog.dismiss()
-            Toast.makeText(this, "Failed download due to ${it.message}",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "${it.message}",Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun saveToDownloadFolder(bytes: ByteArray) {
-        val nameWithExtention = "$bookTitle.pdf"
         try {
-            val downloadFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+//            val downloadFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+//            downloadFolder.mkdirs()
+//            val filePaths = downloadFolder.path + "/" + nameWithExtention
+            val nameWithExtention = "$bookTitle.pdf"
+            val downloadFolder = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),"book app/${firebaseAuth.currentUser!!.email}")
             downloadFolder.mkdirs()
-            val filePaths = downloadFolder.path + "/" + nameWithExtention
+            val filePaths = File(downloadFolder,nameWithExtention)
             val out  =FileOutputStream(filePaths)
             out.write(bytes)
             out.close()
-            Toast.makeText(this , "Saved to Download Folder : ${filePaths}",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this , "Save successfully\nYou can open it in profile app",Toast.LENGTH_SHORT).show()
+            Log.d("toansave : ","$filePaths")
             progressDialog.dismiss()
             incrementDownLoadCount()
         }catch (e: Exception){
             progressDialog.dismiss()
-            Toast.makeText(this, "Failed download due to ${e.message}",Toast.LENGTH_SHORT).show()
+            Log.d("errortoan","${e.message}")
+            Toast.makeText(this, "${e.message}",Toast.LENGTH_SHORT).show()
         }
     }
 
