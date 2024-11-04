@@ -37,6 +37,7 @@ class AdapterPdfUser : RecyclerView.Adapter<AdapterPdfUser.HolderPdfUser>, Filte
             var sizeTv  = binding.sizeTv
             var dateTv  = binding.dateTv
             var categoryTv  = binding.categoryTv
+            var tvTitle  = binding.tvTitle
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HolderPdfUser {
@@ -59,7 +60,9 @@ class AdapterPdfUser : RecyclerView.Adapter<AdapterPdfUser.HolderPdfUser>, Filte
         holder.titleTv.text =  title
         holder.descriptionTv.text = description
         holder.dateTv.text = date
-        MyApplication.loadPdfFromUrlSinglePage(url ,title,holder.pdfView,null )
+        holder.tvTitle.text = title
+//        MyApplication.loadPdfFromUrlSinglePage(url ,title,holder.pdfView,null )
+
         MyApplication.loadPdfSize(url,title,holder.sizeTv)
         MyApplication.loadCategory(categoryId,holder.categoryTv)
 

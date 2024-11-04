@@ -39,6 +39,7 @@ class AdapterPDFAdmin : RecyclerView.Adapter<AdapterPDFAdmin.HolderPDFAdmin>,Fil
         val sizeTv = binding.sizeTv
         val dateTv = binding.dateTv
         val moreBtn = binding.moreBtn
+        val tvTitle = binding.tvTitle
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HolderPDFAdmin {
@@ -60,12 +61,14 @@ class AdapterPDFAdmin : RecyclerView.Adapter<AdapterPDFAdmin.HolderPDFAdmin>,Fil
         holder.descriptionTv.text = description
         holder.dateTv.text = format
         MyApplication.loadCategory(categoryId, holder.categoryTv)
-        MyApplication.loadPdfFromUrlSinglePage(
-            pdfUrl,
-            title,
-            holder.pdfView,
-            null
-        )
+//        MyApplication.loadPdfFromUrlSinglePage(
+//            pdfUrl,
+//            title,
+//            holder.pdfView,
+//            null
+//        )
+
+        holder.tvTitle.text = title
         MyApplication.loadPdfSize(pdfUrl, title, holder.sizeTv)
         holder.moreBtn.setOnClickListener {
             moreOptionDialog(modelPdf, holder)

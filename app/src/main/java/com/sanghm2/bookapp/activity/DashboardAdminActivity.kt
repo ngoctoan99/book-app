@@ -42,6 +42,7 @@ class DashboardAdminActivity : AppCompatActivity() {
         setContentView(binding.root)
         firebaseAuth = FirebaseAuth.getInstance()
         val uri = Uri.parse("package:${BuildConfig.APPLICATION_ID}")
+
         if(ContextCompat.checkSelfPermission(this , Manifest.permission.MANAGE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
 
         }else {

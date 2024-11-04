@@ -129,11 +129,11 @@ class PdfDetailActivity : AppCompatActivity() {
 
                 val date = MyApplication.formatTimeStamp(timestamp.toLong())
                 MyApplication.loadCategory(categoryId, binding.categoryTv)
-                MyApplication.loadPdfFromUrlSinglePage(
-                    bookUrl, bookTitle, binding.pdfView, binding.pageTv
-                )
+//                MyApplication.loadPdfFromUrlSinglePage(
+//                    bookUrl, bookTitle, binding.pdfView, binding.pageTv
+//                )
                 MyApplication.loadPdfSize(bookUrl, bookTitle, binding.sizeTv)
-
+                binding.tvTitle.text = bookTitle
                 binding.titleTv.text = bookTitle
                 binding.descriptionTv.text = description
                 binding.viewTv.text = viewsCount

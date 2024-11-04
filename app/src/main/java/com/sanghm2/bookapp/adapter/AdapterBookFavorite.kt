@@ -35,6 +35,7 @@ class AdapterBookFavorite : RecyclerView.Adapter<AdapterBookFavorite.HolderPdfFa
         var categoryTv = binding.categoryTv
         var sizeTv = binding.sizeTv
         var dateTv = binding.dateTv
+        var tvTitle = binding.tvTitle
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HolderPdfFavorite {
@@ -82,7 +83,9 @@ class AdapterBookFavorite : RecyclerView.Adapter<AdapterBookFavorite.HolderPdfFa
                 val date = MyApplication.formatTimeStamp(timestamp.toLong())
                 MyApplication.loadCategory(categoryId,holder.categoryTv)
                 MyApplication.loadPdfSize("$url","$title",holder.sizeTv)
-                MyApplication.loadPdfFromUrlSinglePage("$url","$title",holder.pdfView,null)
+//                MyApplication.loadPdfFromUrlSinglePage("$url","$title",holder.pdfView,null)
+
+                holder.tvTitle.text = title
                 holder.titleTv.text = title
                 holder.descriptionTv.text = description
                 holder.dateTv.text = date

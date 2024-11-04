@@ -18,10 +18,22 @@
             android:layout_width="110dp"
             android:layout_height="160dp">
 
-            <com.github.barteksc.pdfviewer.PDFView
+            <ImageView
+                android:background="@color/gray02"
                 android:id="@+id/pdfView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_centerInParent="true"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:layout_margin="10dp"
+                android:maxLines="2"
+                android:ellipsize="marquee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
         </RelativeLayout>
         <TextView
             android:id="@+id/titleTv"

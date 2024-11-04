@@ -42,6 +42,7 @@ class DashboardUserActivity : AppCompatActivity() {
         if(ContextCompat.checkSelfPermission(this , Manifest.permission.MANAGE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
 
         }else {
+            Toast.makeText(this,"${ContextCompat.checkSelfPermission(this , Manifest.permission.MANAGE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED}", Toast.LENGTH_SHORT).show()
             val uri = Uri.parse("package:${BuildConfig.APPLICATION_ID}")
             startActivity(
                 Intent(
